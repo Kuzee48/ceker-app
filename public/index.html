@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MLBB Account Checker</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cstaticdun.126.net/load.min.js"></script>
 </head>
 <body>
     <div class="main-wrapper">
-        <h1>MLBB Account Checker</h1>
+        <div class="header">
+            <h1>MLBB Account Checker</h1>
+            <button id="logoutButton">Logout</button>
+        </div>
         <p class="subtitle">Proxyless Web-Based Checker</p>
 
         <div class="main-container">
@@ -20,7 +23,7 @@
                 
                 <div class="controls">
                     <button id="startButton">Mulai Ngecek</button>
-                    <button id="stopButton" disabled>Berhenti Sejenak</button>
+                    <button id="stopButton" disabled>Berhenti</button>
                 </div>
                 
                 <div class="status" id="status">Status: Idle</div>
@@ -35,6 +38,19 @@
             </div>
 
             <div class="right-panel">
+                <h3><span class="icon">🤖</span>Captcha Solver</h3>
+                <p style="text-align: center; font-size: 12px;">Selesaikan captcha untuk mengumpulkan token. Token: <span id="tokenCount" class="token-count">0</span></p>
+                <div class="captcha-container-wrapper">
+                    <div class="captcha-container" id="captcha1"></div>
+                    <div class="captcha-container" id="captcha2"></div>
+                    <div class="captcha-container" id="captcha3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>            <div class="right-panel">
                 <h3><span class="icon">🤖</span>Captcha Solver</h3>
                 <p style="text-align: center; font-size: 12px;">Selesaikan captcha untuk mengumpulkan token. Token: <span id="tokenCount" class="token-count">0</span></p>
                 <div class="captcha-container-wrapper">
