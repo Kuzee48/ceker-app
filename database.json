@@ -1,3 +1,16 @@
 {
-  "users": {}
+  "users": {
+    "aayy": {
+      "password": "tesdatabase123",
+      "expiry": "2025-09-15T10:51:00.000Z"
+    },
+    "admin": {
+      "password": "alinaay12",
+      "expiry": "2026-08-16T10:52:00.000Z"
+    },
+    "premium": {
+      "password": "premiumnihbos1",
+      "expiry": "2027-08-16T10:55:00.000Z"
+    }
+  }
 }
