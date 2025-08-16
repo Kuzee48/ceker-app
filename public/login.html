@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MLBB Checker</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -29,12 +30,38 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const messageEl = document.getElementById('loginMessage');
+            const button = e.target.querySelector('button');
+            
             messageEl.textContent = 'Mencoba login...';
-            messageEl.style.color = '#00aaff';
+            messageEl.className = 'message info';
+            button.disabled = true;
 
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    messageEl.textContent = 'Login berhasil! Mengalihkan...';
+                    messageEl.className = 'message success';
+                    localStorage.setItem('authToken', data.token);
+                    setTimeout(() => window.location.href = '/index.html', 1000);
+                } else {
+                    messageEl.textContent = data.message || 'Login gagal!';
+                    messageEl.className = 'message error';
+                    button.disabled = false;
+                }
+            } catch (error) {
+                messageEl.textContent = 'Terjadi kesalahan jaringan.';
+                messageEl.className = 'message error';
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
