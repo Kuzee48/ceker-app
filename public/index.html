@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MLBB Account Checker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cstaticdun.126.net/load.min.js"></script>
+</head>
+<body>
+    <div class="main-wrapper">
+        <h1>MLBB Account Checker</h1>
+        <p class="subtitle">Proxyless Web-Based Checker</p>
+
+        <div class="main-container">
+            <div class="left-panel">
+                <h3><span class="icon">🎮</span>Akun & Kontrol</h3>
+                <label for="accountList">List Akun (format: email:password)</label>
+                <textarea id="accountList" placeholder="Masukkan list akun di sini..."></textarea>
+                
+                <div class="controls">
+                    <button id="startButton">Mulai Ngecek</button>
+                    <button id="stopButton" disabled>Berhenti Sejenak</button>
+                </div>
+                
+                <div class="status" id="status">Status: Idle</div>
+                <div class="stats" id="stats">
+                    Total: 0 | Checked: 0 | Valid: 0 | Not Found: 0 | Wrong Pass: 0 | Error: 0
+                </div>
+
+                <h3><span class="icon">📊</span>Hasil Pengecekan</h3>
+                <div class="results-container">
+                    <div id="results"></div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <h3><span class="icon">🤖</span>Captcha Solver</h3>
+                <p style="text-align: center; font-size: 12px;">Selesaikan captcha untuk mengumpulkan token. Token: <span id="tokenCount" class="token-count">0</span></p>
+                <div class="captcha-container-wrapper">
+                    <div class="captcha-container" id="captcha1"></div>
+                    <div class="captcha-container" id="captcha2"></div>
+                    <div class="captcha-container" id="captcha3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
