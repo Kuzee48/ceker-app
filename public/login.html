@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - MLBB Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>MLBB Account Checker</h1>
+            <p>Silakan login untuk melanjutkan</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p id="loginMessage" class="message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageEl = document.getElementById('loginMessage');
+            messageEl.textContent = 'Mencoba login...';
+            messageEl.style.color = '#00aaff';
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageEl.textContent = 'Login berhasil! Mengalihkan...';
+                    messageEl.style.color = '#28a745';
+                    localStorage.setItem('authToken', data.token); // Simpan token
+                    setTimeout(() => {
+                        window.location.href = '/index.html'; // Alihkan ke halaman checker
+                    }, 1000);
+                } else {
+                    messageEl.textContent = data.message || 'Login gagal!';
+                    messageEl.style.color = '#dc3545';
+                }
+            } catch (error) {
+                messageEl.textContent = 'Terjadi kesalahan jaringan.';
+                messageEl.style.color = '#dc3545';
+            }
+        });
+    </script>
+</body>
+</html>
