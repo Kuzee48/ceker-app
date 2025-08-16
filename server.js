@@ -11,29 +11,32 @@ const jwt = require('jsonwebtoken');
 const TelegramBot = require('node-telegram-bot-api');
 
 // --- KONFIGURASI ---
-// Ambil dari Environment Variables saat di-deploy
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'RAHASIA_SANGAT_SULIT_DITEBAK';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 const VERCEL_URL = process.env.VERCEL_URL;
 
-// [FIX] Menggunakan direktori /tmp yang bisa ditulis di Vercel
 const DB_FILE = path.join('/tmp', 'database.json');
 const app = express();
 
-// --- [FIX] Inisialisasi Bot yang Aman ---
-let bot; // Deklarasikan bot di luar scope
+// --- Inisialisasi Bot yang Lebih Aman ---
+let bot; 
 
 if (TELEGRAM_BOT_TOKEN) {
     console.log("Token Telegram ditemukan, menginisialisasi bot.");
     bot = new TelegramBot(TELEGRAM_BOT_TOKEN);
 
     if (VERCEL_URL) {
-        const WEBHOOK_URL = `${VERCEL_URL}/api/telegram`;
-        bot.setWebhook(WEBHOOK_URL)
-           .then(() => console.log(`Webhook berhasil diatur ke ${WEBHOOK_URL}`))
-           .catch(err => console.error('Gagal mengatur webhook:', err.message));
+        // [PERBAIKAN] Menambahkan try...catch untuk menangani token yang tidak valid
+        try {
+            const WEBHOOK_URL = `${VERCEL_URL}/api/telegram`;
+            bot.setWebhook(WEBHOOK_URL)
+               .then(() => console.log(`Webhook berhasil diatur ke ${WEBHOOK_URL}`))
+               .catch(err => console.error('Gagal saat proses setWebhook:', err.message));
+        } catch (error) {
+            console.error('KRITIS: Terjadi error saat mencoba .setWebhook(). Kemungkinan besar token tidak valid.', error.message);
+        }
     } else {
         console.warn("PERINGATAN: VERCEL_URL tidak ditemukan, webhook tidak bisa diatur secara otomatis.");
     }
@@ -111,21 +114,18 @@ app.post('/api/check', authMiddleware, async (req, res) => {
     }
 });
 
-// Endpoint untuk menerima update dari Webhook Telegram
 app.post('/api/telegram', (req, res) => {
-    // Pastikan bot berhasil diinisialisasi sebelum memproses update
     if (bot) {
         bot.processUpdate(req.body);
     }
-    res.sendStatus(200); // Selalu balas 200 OK ke Telegram
+    res.sendStatus(200);
 });
 
-// Rute untuk halaman login
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// --- Logika Bot Telegram (hanya berjalan jika bot berhasil dibuat) ---
+// --- Logika Bot Telegram ---
 if (bot) {
     bot.on('message', (msg) => {
         if (!ADMIN_CHAT_ID || msg.chat.id.toString() !== ADMIN_CHAT_ID) {
@@ -191,5 +191,4 @@ Perintah yang tersedia:
     });
 }
 
-// Ekspor aplikasi untuk Vercel
 module.exports = app;
