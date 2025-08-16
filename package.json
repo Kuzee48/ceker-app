@@ -1,0 +1,19 @@
+{
+  "name": "mlbb-checker-app",
+  "version": "1.0.0",
+  "description": "A full-stack web application for checking MLBB accounts with user management.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Aay",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "crypto-js": "^4.2.0",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^2.7.0",
+    "node-telegram-bot-api": "^0.65.1"
+  }
+}
